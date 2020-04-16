@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "main": "",
   "scripts": {
+    "build": "sls package --stage development",
+    "build:staging": "sls package --stage staging",
     "start": "concurrently \"yarn compose\" \"yarn sls:offline\"",
     "sls:offline": "sls offline start",
     "compose": "docker-compose  -f ./database/docker-compose.yml up -d",
