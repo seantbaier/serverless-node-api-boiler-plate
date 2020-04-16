@@ -61,7 +61,6 @@ class UserService {
     }
 
     const user = await User.create(data);
-    console.log("user: ", user);
     await AWS.updateUser(user);
     return this.renameFields(user);
   };

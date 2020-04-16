@@ -136,8 +136,6 @@ async function updateUsers(users) {
   while (items.length) {
     const item = items.pop();
 
-    console.log("User:", item);
-
     await updateUser(item);
     await sleep(100);
   }
