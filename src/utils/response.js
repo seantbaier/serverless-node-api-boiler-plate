@@ -1,4 +1,4 @@
-import { isArray } from 'lodash';
+import { isArray } from "lodash";
 
 export const makeUpdatedResponse = (original, updated) => ({
   data: {
@@ -15,7 +15,7 @@ export const makeArray = (req, data, itemCount) => {
   const pageCount = Math.ceil(itemCount / limit);
 
   return {
-    object: 'list',
+    object: "list",
     has_more: currentPage < pageCount,
     data,
     pageCount,
@@ -25,7 +25,7 @@ export const makeArray = (req, data, itemCount) => {
 };
 
 export const makeObject = (req, data) => ({
-  object: 'object',
+  object: "object",
   data,
 });
 

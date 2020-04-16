@@ -6,8 +6,8 @@
     "start": "concurrently \"yarn compose\" \"yarn sls:offline\"",
     "sls:offline": "sls offline start",
     "compose": "docker-compose  -f ./database/docker-compose.yml up -d",
-    "lint": "eslint -c .eslintrc.json {src}/**",
-    "lint:fix": "eslint --fix -c .eslintrc.json {src}/**"
+    "lint": "prettier -check src/**/*",
+    "lint:fix": "prettier --write src/**/*"
   },
   "dependencies": {
     "@babel/register": "^7.9.0",
