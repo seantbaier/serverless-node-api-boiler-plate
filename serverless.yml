@@ -16,13 +16,6 @@ custom:
   stage: ${opt:stage, self:provider.stage}
   defaultStage: staging
   defaultRegion: us-east-1
-  domains:
-    staging: staging-api.${env:PROJECT_DOMAIN}
-  customDomain:
-    domainName: ${self:custom.domains.${self:custom.stage}}
-    basePath: ""
-    stage: ${self:provider.stage}
-    createRoute53Record: true
   webpack:
     webpackConfig: webpack.config.js
     includeModules: true
@@ -36,7 +29,6 @@ custom:
       - ENV_NAME
       - PROJECT_NAME
       - PROJECT_VERSION
-      - PROJECT_DOMAIN
       - AWS_ACCOUNT_ID
       - USERPOOL_REGION
       - USERPOOL_ID
