@@ -1,0 +1,74 @@
+service: ${file(package.json):name, 'salesforce-ecommerce-api-v1'}
+plugins:
+  - serverless-domain-manager
+  - serverless-offline
+  - serverless-webpack
+  - serverless-dotenv-plugin
+
+package:
+  individually: true
+  exclude:
+    - .circleci/**
+    - data/**
+    - tests/**
+
+custom:
+  stage: ${opt:stage, self:provider.stage}
+  defaultStage: staging
+  defaultRegion: us-east-1
+  domains:
+    staging: staging-api.${env:PROJECT_DOMAIN}
+  customDomain:
+    domainName: ${self:custom.domains.${self:custom.stage}}
+    basePath: ""
+    stage: ${self:provider.stage}
+    createRoute53Record: true
+  webpack:
+    webpackConfig: webpack.config.js
+    includeModules: true
+    packager: npm
+  serverless-offline:
+    host: 0.0.0.0
+    port: 3000
+  dotenv:
+    include:
+      - MONGODB_URI
+      - ENV_NAME
+      - PROJECT_NAME
+      - PROJECT_VERSION
+      - PROJECT_DOMAIN
+      - AWS_ACCOUNT_ID
+      - USERPOOL_REGION
+      - USERPOOL_ID
+      - USERPOOL_APP_CLIENT_ID
+      - ASSETS_S3_BUCKET
+
+provider:
+  name: aws
+  stage: ${opt:stage, self:custom.defaultStage}
+  region: ${opt:region, self:custom.defaultRegion}
+  runtime: nodejs12.x
+  memorySize: 1024
+  timeout: 30
+
+functions:
+  # API Functions
+  api:
+    handler: src/lambda.handler
+    warmup: true
+    role: arn:aws:iam::${env:AWS_ACCOUNT_ID}:role/ecommerce-salesforce-api-${env:ENV_NAME}-identity-lambda
+    events:
+      - http:
+          path: / # this matches the base path
+          method: ANY
+          cors: true
+      - http:
+          path: /auth/{any+} # this matches authenticated paths and will require a JWT. The token 'any' doesn't mean anything special.
+          method: ANY
+          cors: true
+          authorizer:
+            arn: arn:aws:cognito-idp:${self:provider.region}:${env:AWS_ACCOUNT_ID}:userpool/${env:USERPOOL_ID}
+      - http:
+          path: /public/{any+} # this matches any path. The token 'any' doesn't mean anything special
+          method: ANY
+          cors: true
