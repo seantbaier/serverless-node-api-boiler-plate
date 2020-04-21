@@ -1,7 +1,6 @@
 import Joi from "@hapi/joi";
 
 import JoiNotWhitespace from "./extensions/joi-not-whitespace";
-import FileUploadData from "./file-upload-data";
 
 const CustomJoi = Joi.extend(JoiNotWhitespace);
 
@@ -14,9 +13,6 @@ const CreateSchema = Joi.object({
     .allow("", null),
   firstName: CustomJoi.string().notWhitespace().min(2).required(),
   lastName: CustomJoi.string().notWhitespace().min(2).required(),
-  profilePic: CustomJoi.alternatives()
-    .allow("", null)
-    .try(FileUploadData.required(), CustomJoi.string().uri().required()),
   role: CustomJoi.string().valid("System Administrator"),
   isActive: Joi.boolean().default(true),
 }).unknown(true);
@@ -30,9 +26,6 @@ const UpdateSchema = CreateSchema.append({
 const PatchSchema = Joi.object({
   firstName: CustomJoi.string().notWhitespace().min(2).optional(),
   lastName: CustomJoi.string().notWhitespace().min(2).optional(),
-  profilePic: CustomJoi.alternatives()
-    .allow("", null)
-    .try(FileUploadData.required(), CustomJoi.string().uri().required()),
   role: CustomJoi.string().valid("System Administrator").optional(),
   isActive: Joi.boolean().optional(),
 });

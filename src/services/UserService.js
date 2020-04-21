@@ -20,6 +20,8 @@ class UserService {
       query: { limit, sort },
     } = req;
 
+    console.log("query: ", req.query);
+
     return User.find();
   };
 
@@ -28,8 +30,19 @@ class UserService {
       params: { id },
     } = req;
 
-    const result = await User.quer({ _id: id });
-    return !isLoggedIn(req) ? this.sanatizeUserData(result) : result;
+    const query = getLookupQuery(id);
+
+    const users = await User.find(query);
+
+    if (!users[0] || !users[0].isActive) {
+      throw new ApiError({
+        message: "404 User Not Found",
+        statusCode: HttpStatus.NOT_FOUND,
+      });
+    }
+
+    const user = users[0];
+    return user;
   };
 
   create = async (req) => {
@@ -174,8 +187,6 @@ class UserService {
 
   renameFields = (data) => {
     const result = renameMongoDbFields(data);
-    result.profilePic = result.profilePicUrl;
-    delete result.profilePicUrl;
 
     return result;
   };

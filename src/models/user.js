@@ -2,7 +2,7 @@
  * User model
  */
 
-import { isEmpty, isEmail, isURL } from "validator";
+import { isEmpty, isEmail } from "validator";
 import { createModel } from "../utils/db";
 
 export default createModel(
@@ -34,18 +34,6 @@ export default createModel(
       validate: {
         validator: (value) => !isEmpty(value, { ignore_whitespace: true }),
         message: (props) => `${props.value} cannot be empty!`,
-      },
-    },
-    profilePicUrl: {
-      type: String,
-      required: false,
-      validate: {
-        validator: (value) =>
-          typeof value === "undefined" ||
-          value === null ||
-          isEmpty(value, { ignore_whitespace: true }) ||
-          isURL(value),
-        message: (props) => `${props.value} must be a valid URL!`,
       },
     },
     role: {
