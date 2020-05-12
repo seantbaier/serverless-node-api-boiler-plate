@@ -17,20 +17,20 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "yarn.lock" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+            - v1-dependencies-{{ checksum "package-lock.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
 
-      - run: yarn
+      - run: npm install
       - save_cache:
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "yarn.lock" }}
+          key: v1-dependencies-{{ checksum "package-lock.json" }}
 
-      - run: yarn lint
+      - run: npm run lint
       - run: env > .env
-      - run: yarn build
-      
+      - run: npm run build
+
       #save product of build
       - persist_to_workspace:
           root: .
@@ -49,17 +49,17 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
 
-      - run: yarn
+      - run: npm install
 
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      
+
       # apply package from the build step
       - run: env > .env
       - run:
@@ -72,12 +72,12 @@ workflows:
   build-and-deploy-staging:
     jobs:
       - build-staging:
-          context: ecommerce-salesforce-stage
+          context: buckets-api-stage
           filters:
             branches:
               only: staging
       - deploy-staging:
-          context: ecommerce-salesforce-stage
+          context: buckets-api-stage
           requires:
             - build-staging
           filters:

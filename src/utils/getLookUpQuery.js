@@ -1,18 +1,18 @@
-import { isMongoId, isEmail } from "validator";
-import { convertToObjectId } from "./db";
+import { isMongoId, isEmail } from 'validator'
+import { convertToObjectId } from './db'
 
 const getLookupQuery = (id) => {
-  const query = { isActive: true };
+  const query = { isActive: true }
 
   if (isMongoId(id)) {
-    query._id = convertToObjectId(id);
+    query._id = convertToObjectId(id)
   } else if (isEmail(id)) {
-    query.email = id;
+    query.email = id
   } else {
-    query.externalId = id;
+    query.externalId = id
   }
 
-  return query;
-};
+  return query
+}
 
-export default getLookupQuery;
+export default getLookupQuery

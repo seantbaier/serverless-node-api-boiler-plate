@@ -1,17 +1,17 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 
 const renameMongoDbFields = (data) => {
-  const obj = data instanceof mongoose.Document ? data.toObject() : data;
+  const obj = data instanceof mongoose.Document ? data.toObject() : data
 
   if (obj) {
-    obj.id = obj._id;
-    delete obj._id;
+    obj.id = obj._id
+    delete obj._id
 
-    obj.version = obj.__v;
-    delete obj.__v;
+    obj.version = obj.__v
+    delete obj.__v
   }
 
-  return obj;
-};
+  return obj
+}
 
-export default renameMongoDbFields;
+export default renameMongoDbFields
