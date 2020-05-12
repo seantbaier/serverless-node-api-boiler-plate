@@ -1,11 +1,11 @@
-import { Schema, model, Types } from "mongoose";
+import { Schema, model, Types } from 'mongoose'
 
-export const { ObjectId } = Types;
+export const { ObjectId } = Types
 
 export const convertToObjectId = (id) =>
-  typeof id === "string" ? new ObjectId(id) : id;
+  typeof id === 'string' ? new ObjectId(id) : id
 
-export const isObjectId = (id) => ObjectId.isValid(id);
+export const isObjectId = (id) => ObjectId.isValid(id)
 
 // eslint-disable-next-line max-len
 export const createModel = (
@@ -15,24 +15,24 @@ export const createModel = (
   schemaIndex,
   schemaFunctions
 ) => {
-  let mongooseModel = null;
+  let mongooseModel = null
 
   try {
-    mongooseModel = model(name);
+    mongooseModel = model(name)
   } catch (error) {
-    const schema = new Schema(schemaDefinition, schemaOptions);
+    const schema = new Schema(schemaDefinition, schemaOptions)
     if (schemaFunctions) {
       // eslint-disable-next-line no-return-assign
       schemaFunctions.map(
         (sFunc) => (schema[sFunc.type][sFunc.name] = sFunc.function)
-      );
+      )
     }
     if (schemaIndex) {
-      schema.index(schemaIndex);
+      schema.index(schemaIndex)
     }
 
-    mongooseModel = model(name, schema);
+    mongooseModel = model(name, schema)
   }
 
-  return mongooseModel;
-};
+  return mongooseModel
+}

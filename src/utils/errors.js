@@ -1,12 +1,12 @@
 class BaseError extends Error {
-  constructor({ message, statusCode, body = "" }) {
-    super(message);
-    this.statusCode = statusCode;
-    this.body = body;
+  constructor({ message, statusCode, body = '' }) {
+    super(message)
+    this.statusCode = statusCode
+    this.body = body
   }
 
   toString() {
-    return `${this.constructor.name}: ${this.message}`;
+    return `${this.constructor.name}: ${this.message}`
   }
 }
 
