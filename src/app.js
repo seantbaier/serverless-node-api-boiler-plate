@@ -56,23 +56,32 @@ app.use(cors(corsOptions))
 app.use(passport.initialize())
 passport.use('jwt', jwtStrategy)
 
-// // limit repeated failed requests to auth endpoints
+// limit repeated failed requests to auth endpoints
 if (config.env === 'production') {
   app.use('/v1/auth', authLimiter)
 }
 
 // v1 api routes
-app.use('/', routes)
+app.use('/v1', routes)
 
-// // send back a 404 error for any unknown api request
+// send back a 404 error for any unknown api request
 app.use((req, res, next) => {
   next(new ApiError(httpStatus.NOT_FOUND, 'Not found'))
 })
 
-// // convert error to ApiError, if needed
+// convert error to ApiError, if needed
 app.use(errorConverter)
 
-// // handle error
+// handle error
 app.use(errorHandler)
 
-module.exports.handler = serverless(app)
+// or as a promise
+const handler = serverless(app)
+module.exports.handler = async (event, context) => {
+  // you can do other things here
+  const result = await handler(event, context)
+  // and here
+  return result
+}
+
+// module.exports = app

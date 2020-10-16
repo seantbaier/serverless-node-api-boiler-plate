@@ -1,6 +1,6 @@
 # serverless.yml
 
-service: ${file(package.json):name, 'studio-sauce-api-v1'}
+service: studio-sauce-api
 
 plugins:
   - serverless-dotenv-plugin
@@ -11,7 +11,7 @@ plugins:
 
 custom:
   stage: ${opt:stage, self:provider.stage}
-  defaultStage: development
+  defaultStage: dev
   defaultRegion: us-east-1
   serverless-offline:
     noPrependStageInUrl: true
@@ -24,6 +24,15 @@ custom:
       - PROJECT_VERSION
       - AWS_ACCOUNT_ID
       - NODE_ENV
+      - PORT
+      - JWT_SECRET
+      - JWT_ACCESS_EXPIRATION_MINUTES
+      - JWT_REFRESH_EXPIRATION_DAYS
+      - SMTP_HOST
+      - SMTP_PORT
+      - SMTP_USERNAME
+      - SMTP_PASSWORD
+      - EMAIL_FROM
 
 # custom:
 #   webpack:
@@ -37,24 +46,20 @@ provider:
   region: ${opt:region, self:custom.defaultRegion}
   runtime: nodejs12.x
   memorySize: 1024
-  timeout: 30
+  timeout: 300
 
 functions:
   api:
     handler: src/app.handler
-    role: arn:aws:iam::${env:AWS_ACCOUNT_ID}:role/studio-sauce-api-${env:NODE_ENV}-identity-lambda
+    # role: arn:aws:iam::${env:AWS_ACCOUNT_ID}:role/studio-sauce-api-${env:NODE_ENV}-identity-lambda
     events:
       - http:
           path: /
           method: ANY
           cors: true
       - http:
-          path: /auth/{proxy+}
+          path: /{proxy+}
           method: ANY
           cors: true
           # authorizer:
           # arn: arn:aws:cognito-idp:${self:provider.region}:${env:AWS_ACCOUNT_ID}:userpool/${env:USERPOOL_ID}
-      - http:
-          path: /public/{proxy+}
-          method: ANY
-          cors: true
