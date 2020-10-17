@@ -1,0 +1,92 @@
+version: 2.1
+
+orbs:
+  serverless-framework: circleci/serverless-framework@1.0.1
+jobs:
+  build-dev:
+    executor: serverless/default
+    working_directory: ~/repo
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package-lock.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run:
+          name: Install Dependencies
+          command: yarn install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "yarn.lock.json" }}
+
+      - run:
+          name: Linting
+          command: yarn lint
+      - run:
+          name: Configure Environment Variables
+          command: env > .env
+      - run:
+          name: Build
+          command: sls package --stage dev
+
+      #save product of build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .serverless
+
+  deploy-dev:
+    executor: serverless/default
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run: ls -la
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - aws-cli/setup
+
+      - run:
+          name: Install Dependencies
+          command: yarn install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      - run:
+          name: Configure Environment Variables
+          command: env > .env
+      - run:
+          name: Deploy to AWS
+          command: serverless deploy -v --stage dev --region us-east-1 --package ./.serverless
+
+workflows:
+  version: 2
+  build-and-deploy-dev:
+    jobs:
+      - build-dev:
+          context: studiosauce-dev
+          filters:
+            branches:
+              only: development
+      - deploy-dev:
+          context: serverless-node-api-dev
+          requires:
+            - build-dev
+          filters:
+            branches:
+              only: development
