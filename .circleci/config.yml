@@ -1,8 +1,12 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
 version: 2.1
 
 orbs:
-  serverless: circleci/serverless-framework@1.0.1
-
+  aws-cli: circleci/aws-cli@x.y
+  serverless-framework: circleci/serverless-framework@1.0.1
 jobs:
   build-dev:
     executor: serverless/default
@@ -13,7 +17,7 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "package-lock.json" }}
+            - v1-dependencies-{{ checksum "yarn.lock.json" }}
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
@@ -83,11 +87,16 @@ workflows:
           context: serverless-node-api-dev
           filters:
             branches:
-              only: overhaul-2
+              only: develop
+      - aws-serverless/deploy:
+          name: deploy-dev
+          stack-name: serverless-node-api-dev
+          template: ./.yml
+
       - deploy-dev:
           context: serverless-node-api-dev
           requires:
             - build-dev
           filters:
             branches:
-              only: development
+              only: develop
