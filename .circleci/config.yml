@@ -38,7 +38,7 @@ jobs:
           command: env > .env
       - run:
           name: Build
-          command: serverless package --stage dev
+          command: yarn build
 
       #save product of build
       - persist_to_workspace:
