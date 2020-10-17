@@ -4,18 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "sls package --stage dev",
-    "babel": "babel src --out-dir dist",
+    "start": "pm2 start ecosystem.config.json --no-daemon",
     "dev": "sls offline start",
-    "test": "NODE_ENV=testing jest --forceExit --detectOpenHandles  --silent",
-    "test-routes": "yarn test -t router",
-    "test-models": "yarn test -t model",
-    "test-controllers": "yarn test -t controllers",
-    "test-auth": "yarn test -t Authentication:",
+    "test": "jest -i",
+    "test:watch": "jest -i --watchAll",
+    "coverage": "jest -i --coverage",
+    "coverage:coveralls": "jest -i --coverage --coverageReporters=text-lcov | coveralls",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prettier": "prettier --check **/*.js",
-    "prettier:fix": "prettier --write \"{,**/}*.js\""
+    "prettier:fix": "prettier --write \"{,**/}*.js\"",
+    "docker:prod": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml up",
+    "docker:dev": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml up",
+    "docker:test": "docker-compose -f docker-compose.yml -f docker-compose.test.yml up"
   },
   "repository": {
     "type": "git",
