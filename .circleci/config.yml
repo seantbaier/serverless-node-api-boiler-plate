@@ -88,11 +88,6 @@ workflows:
           filters:
             branches:
               only: overhaul-2
-      - aws-serverless/deploy:
-          name: deploy-dev
-          stack-name: serverless-node-api-dev
-          template: ./.yml
-
       - deploy-dev:
           context: serverless-node-api-dev
           requires:
