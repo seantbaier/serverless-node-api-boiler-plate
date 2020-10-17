@@ -6,9 +6,6 @@ dotenv.config({ path: path.join(__dirname, '../../.env') })
 
 const envVarsSchema = Joi.object()
   .keys({
-    MONGODB_NAME: Joi.string()
-      .required()
-      .description('Name of database'),
     NODE_ENV: Joi.string()
       .valid('production', 'development', 'test')
       .required(),
@@ -46,7 +43,6 @@ export default {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     },
-    dbName: envVars.MONGODB_NAME,
   },
   jwt: {
     secret: envVars.JWT_SECRET,
