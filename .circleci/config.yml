@@ -87,7 +87,7 @@ workflows:
           context: serverless-node-api-dev
           filters:
             branches:
-              only: develop
+              only: overhaul-2
       - aws-serverless/deploy:
           name: deploy-dev
           stack-name: serverless-node-api-dev
@@ -99,4 +99,4 @@ workflows:
             - build-dev
           filters:
             branches:
-              only: develop
+              only: overhaul-2
