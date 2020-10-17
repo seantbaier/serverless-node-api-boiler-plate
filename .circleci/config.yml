@@ -77,7 +77,7 @@ jobs:
           command: env > .env
       - run:
           name: Deploy to AWS
-          command: serverless deploy -v --stage dev --region us-east-1 --package ./.serverless
+          command: node_modules/.bin/serverless deploy --verbose --stage dev --region us-east-1 --package ./.serverless
 
 workflows:
   version: 2
