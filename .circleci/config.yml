@@ -87,11 +87,11 @@ workflows:
           context: serverless-node-api-dev
           filters:
             branches:
-              only: overhaul-2
+              only: development
       - deploy-dev:
           context: serverless-node-api-dev
           requires:
             - build-dev
           filters:
             branches:
-              only: overhaul-2
+              only: development
