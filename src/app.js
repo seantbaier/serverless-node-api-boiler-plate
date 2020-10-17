@@ -6,7 +6,6 @@ import compression from 'compression'
 import cors from 'cors'
 import passport from 'passport'
 import httpStatus from 'http-status'
-import serverless from 'serverless-http'
 import config from './config/config'
 import * as morgan from './config/morgan'
 import jwtStrategy from './config/passport'
@@ -58,7 +57,7 @@ passport.use('jwt', jwtStrategy)
 
 // limit repeated failed requests to auth endpoints
 if (config.env === 'production') {
-  app.use('/v1/auth', authLimiter)
+  app.use('/api/v1/auth', authLimiter)
 }
 
 // v1 api routes
@@ -75,7 +74,4 @@ app.use(errorConverter)
 // handle error
 app.use(errorHandler)
 
-const handler = serverless(app)
-
-// eslint-disable-next-line import/prefer-default-export
-export { handler }
+export default app
