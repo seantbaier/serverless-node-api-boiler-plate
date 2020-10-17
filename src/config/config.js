@@ -6,7 +6,7 @@ dotenv.config({ path: path.join(__dirname, '../../.env') })
 
 const envVarsSchema = Joi.object()
   .keys({
-    NODE_ENV: Joi.string()
+    ENV_NAME: Joi.string()
       .valid('production', 'development', 'test')
       .required(),
     PORT: Joi.number().default(3000),
@@ -34,10 +34,10 @@ if (error) {
 }
 
 export default {
-  env: envVars.NODE_ENV,
+  env: envVars.ENV_NAME,
   port: envVars.PORT,
   mongoose: {
-    url: envVars.MONGODB_URL + (envVars.NODE_ENV === 'test' ? '-test' : ''),
+    url: envVars.MONGODB_URL + (envVars.ENV_NAME === 'test' ? '-test' : ''),
     options: {
       useCreateIndex: true,
       useNewUrlParser: true,
