@@ -1,0 +1,97 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2.1
+
+orbs:
+  aws-cli: circleci/aws-cli@1.3.0
+  serverless: circleci/serverless-framework@1.0.1
+jobs:
+  build-dev:
+    executor: serverless/default
+    working_directory: ~/repo
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "yarn.lock" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run:
+          name: Install Dependencies
+          command: yarn install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "yarn.lock" }}
+
+      - run:
+          name: Linting
+          command: yarn lint
+      - run:
+          name: Configure Environment Variables
+          command: env > .env
+      - run:
+          name: Build
+          command: yarn build
+
+      #save product of build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .serverless
+
+  deploy-dev:
+    executor: serverless/default
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run: ls -la
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - aws-cli/setup
+
+      - run:
+          name: Install Dependencies
+          command: yarn install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      - run:
+          name: Configure Environment Variables
+          command: env > .env
+      - run:
+          name: Deploy to AWS
+          command: node_modules/.bin/serverless deploy --verbose --stage dev --region us-east-1 --package ./.serverless
+
+workflows:
+  version: 2
+  build-and-deploy-dev:
+    jobs:
+      - build-dev:
+          context: serverless-node-api-dev
+          filters:
+            branches:
+              only: overhaul-2
+      - deploy-dev:
+          context: serverless-node-api-dev
+          requires:
+            - build-dev
+          filters:
+            branches:
+              only: overhaul-2

@@ -1,12 +1,12 @@
-const express = require('express')
-const authRoute = require('./auth')
-const userRoute = require('./user')
-const docsRoute = require('./docs')
+import express from 'express'
 
 const router = express.Router()
+router.get('/', (req, res) => {
+  res.send({ message: 'hello deployed through cicd' })
+})
 
-router.use('/auth', authRoute)
-router.use('/auth/users', userRoute)
-router.use('/docs', docsRoute)
+router.post('/', (req, res) => {
+  res.send({ message: 'ok' })
+})
 
-module.exports = router
+export default router

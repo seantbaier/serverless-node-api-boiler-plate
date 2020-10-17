@@ -4,15 +4,18 @@ service: studio-sauce-api
 
 plugins:
   - serverless-dotenv-plugin
+  - serverless-webpack
   - serverless-offline
-
-# plugins:
-# - serverless-webpack
 
 custom:
   stage: ${opt:stage, self:provider.stage}
   defaultStage: dev
   defaultRegion: us-east-1
+  webpack:
+    webpackConfig: 'webpack.config.js' # Name of webpack configuration file
+    includeModules: true # Node modules configuration for packaging
+    packager: 'yarn' # Packager that will be used to package your external modules
+    excludeFiles: src/**/*.test.js # Provide a glob for files to ignore
   serverless-offline:
     noPrependStageInUrl: true
     host: 0.0.0.0
@@ -28,17 +31,6 @@ custom:
       - JWT_SECRET
       - JWT_ACCESS_EXPIRATION_MINUTES
       - JWT_REFRESH_EXPIRATION_DAYS
-      - SMTP_HOST
-      - SMTP_PORT
-      - SMTP_USERNAME
-      - SMTP_PASSWORD
-      - EMAIL_FROM
-
-# custom:
-#   webpack:
-#     webpackConfig: webpack.config.js
-#     includeModules: true
-#     packager: yarn
 
 provider:
   name: aws
@@ -46,12 +38,11 @@ provider:
   region: ${opt:region, self:custom.defaultRegion}
   runtime: nodejs12.x
   memorySize: 1024
-  timeout: 300
+  timeout: 30
 
 functions:
   api:
     handler: src/app.handler
-    # role: arn:aws:iam::${env:AWS_ACCOUNT_ID}:role/studio-sauce-api-${env:NODE_ENV}-identity-lambda
     events:
       - http:
           path: /
@@ -61,5 +52,3 @@ functions:
           path: /{proxy+}
           method: ANY
           cors: true
-          # authorizer:
-          # arn: arn:aws:cognito-idp:${self:provider.region}:${env:AWS_ACCOUNT_ID}:userpool/${env:USERPOOL_ID}

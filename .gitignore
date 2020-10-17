@@ -14,4 +14,12 @@ yarn-error.log
 # Code coverage
 coverage
 
+# Serverless
 .serverless
+
+# webpack
+.webpack
+dist
+
+# npm
+package-lock.json
