@@ -38,7 +38,7 @@ jobs:
           command: env > .env
       - run:
           name: Build
-          command: sls package --stage dev
+          command: serverless package --stage dev
 
       #save product of build
       - persist_to_workspace:
