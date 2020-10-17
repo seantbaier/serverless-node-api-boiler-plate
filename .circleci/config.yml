@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   serverless-framework: circleci/serverless-framework@1.0.1
+
 jobs:
   build-dev:
     executor: serverless/default
@@ -79,10 +80,10 @@ workflows:
   build-and-deploy-dev:
     jobs:
       - build-dev:
-          context: studiosauce-dev
+          context: serverless-node-api-dev
           filters:
             branches:
-              only: development
+              only: overhaul-2
       - deploy-dev:
           context: serverless-node-api-dev
           requires:
