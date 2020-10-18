@@ -6,8 +6,9 @@ import setupTestDB from '../utils/setupTestDB'
 import { User } from '../../src/models'
 import { userOne, userTwo, admin, insertUsers } from '../fixtures/user.fixture'
 import { userOneAccessToken, adminAccessToken } from '../fixtures/token.fixture'
+import config from '../../src/config/config'
 
-const baseUrl = '/api/v1'
+const { baseUrl } = config
 
 setupTestDB()
 

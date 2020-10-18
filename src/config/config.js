@@ -10,9 +10,13 @@ const envVarsSchema = Joi.object()
       .valid('production', 'development', 'test')
       .required(),
     PORT: Joi.number().default(3000),
+    BASE_URL: Joi.string().required(),
     MONGODB_URL: Joi.string()
       .required()
       .description('Mongo DB url'),
+    MONGODB_NAME: Joi.string()
+      .required()
+      .description('Mongo DB name'),
     JWT_SECRET: Joi.string()
       .required()
       .description('JWT secret key'),
@@ -43,13 +47,15 @@ if (error) {
 export default {
   env: envVars.ENV_NAME,
   port: envVars.PORT,
+  baseUrl: envVars.BASE_URL,
   mongoose: {
-    url: envVars.MONGODB_URL + (envVars.ENV_NAME === 'test' ? '-test' : ''),
+    url: envVars.MONGODB_URL,
     options: {
       useCreateIndex: true,
       useNewUrlParser: true,
       useUnifiedTopology: true,
     },
+    dbName: envVars.MONGODB_NAME + (envVars.ENV_NAME === 'test' ? '-test' : ''),
   },
   jwt: {
     secret: envVars.JWT_SECRET,

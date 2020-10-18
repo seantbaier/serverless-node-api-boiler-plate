@@ -144,7 +144,7 @@ describe('Error middlewares', () => {
           stack: error.stack,
         })
       )
-      config.env = process.env.NODE_ENV
+      config.env = process.env.ENV_NAME
     })
 
     test('should send internal server error status and message if in production mode and error is not operational', () => {
@@ -162,7 +162,7 @@ describe('Error middlewares', () => {
         })
       )
       expect(res.locals.errorMessage).toBe(error.message)
-      config.env = process.env.NODE_ENV
+      config.env = process.env.ENV_NAME
     })
 
     test('should preserve original error status and message if in production mode and error is operational', () => {
@@ -179,7 +179,7 @@ describe('Error middlewares', () => {
           message: error.message,
         })
       )
-      config.env = process.env.NODE_ENV
+      config.env = process.env.ENV_NAME
     })
   })
 })

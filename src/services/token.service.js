@@ -89,6 +89,7 @@ const generateAuthTokens = async user => {
     refreshTokenExpires,
     tokenTypes.REFRESH
   )
+
   await saveToken(
     refreshToken,
     user.id,

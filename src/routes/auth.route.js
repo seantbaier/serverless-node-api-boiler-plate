@@ -51,11 +51,14 @@ export default router
  *            schema:
  *              type: object
  *              required:
- *                - name
+ *                - firstName
+ *                - lastName
  *                - email
  *                - password
  *              properties:
- *                name:
+ *                firstName:
+ *                  type: string
+ *                lastName:
  *                  type: string
  *                email:
  *                  type: string
@@ -67,7 +70,8 @@ export default router
  *                  minLength: 8
  *                  description: At least one number and one letter
  *              example:
- *                name: fake name
+ *                firstName: fake
+ *                lastName: name
  *                email: fake@example.com
  *                password: password1
  *      responses:

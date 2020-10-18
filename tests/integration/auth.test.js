@@ -16,7 +16,7 @@ import tokenTypes from '../../src/config/tokens'
 import { userOne, admin, insertUsers } from '../fixtures/user.fixture'
 import { userOneAccessToken, adminAccessToken } from '../fixtures/token.fixture'
 
-const baseUrl = '/api/v1'
+const { baseUrl } = config
 
 setupTestDB()
 
@@ -30,6 +30,7 @@ describe('Auth routes', () => {
         password: 'password1',
       }
     })
+
     test('should return 201 and successfully register user if request data is ok', async () => {
       const res = await request(app)
         .post(`${baseUrl}/auth/register`)

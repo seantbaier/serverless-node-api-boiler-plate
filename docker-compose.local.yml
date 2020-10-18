@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  mongodb:
+    image: mongo:4.2.1-bionic
+    domainname: studiosauce
+    hostname: studiosauce
+    container_name: studiosauce
+    restart: always
+    environment:
+      - MONGO_INITDB_DATABASE=studiosauce
+      - MONGO_INITDB_ROOT_USERNAME=studiosauce
+      - MONGO_INITDB_ROOT_PASSWORD=studiosauce
+    ports:
+      - '27017:27017'
+    volumes:
+      - ./src/database/mongo-volume:/data/db
+      - ./src/database/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
