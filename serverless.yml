@@ -23,10 +23,9 @@ custom:
   dotenv:
     include:
       - MONGODB_URL
-      - PROJECT_NAME
-      - PROJECT_VERSION
-      - AWS_ACCOUNT_ID
+      - MONGODB_NAME
       - ENV_NAME
+      - BASE_URL
       - PORT
       - JWT_SECRET
       - JWT_ACCESS_EXPIRATION_MINUTES
