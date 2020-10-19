@@ -6,6 +6,7 @@ import {
   tokenService,
   emailService,
 } from '../services'
+import ApiError from '../utils/ApiError'
 
 const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body)
@@ -43,4 +44,20 @@ const resetPassword = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send()
 })
 
-export { register, login, logout, refreshTokens, forgotPassword, resetPassword }
+const getCurrentUser = catchAsync(async (req, res) => {
+  const user = await userService.getUserById(req.params.userId)
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found')
+  }
+  res.send(user)
+})
+
+export {
+  register,
+  login,
+  logout,
+  refreshTokens,
+  forgotPassword,
+  resetPassword,
+  getCurrentUser,
+}

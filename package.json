@@ -67,6 +67,8 @@
     "serverless-http": "^2.6.0",
     "serverless-offline": "^6.8.0",
     "source-map-support": "^0.5.19",
+    "swagger-jsdoc": "^4.3.0",
+    "swagger-ui-express": "^4.1.4",
     "validator": "^10.9.0",
     "winston": "^3.3.3",
     "xss-clean": "^0.1.1"

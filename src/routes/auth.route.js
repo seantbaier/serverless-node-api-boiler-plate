@@ -5,6 +5,11 @@ import * as authController from '../controllers/auth.controller'
 
 const router = express.Router()
 
+router.get(
+  '/me',
+  validate(authValidation.getCurrentUser),
+  authController.getCurrentUser
+)
 router.post(
   '/register',
   validate(authValidation.register),
@@ -35,6 +40,39 @@ export default router
  * tags:
  *   name: Auth
  *   description: Authentication
+ */
+
+/**
+ * @swagger
+ * path:
+ *  /auth/me/{id}:
+ *    get:
+ *      summary: Get the current user
+ *      description: Logged in users can fetch only their own user information. Only admins can fetch other users.
+ *      tags: [Auth]
+ *      security:
+ *        - bearerAuth: []
+ *      parameters:
+ *        - in: path
+ *          name: id
+ *          required: true
+ *          schema:
+ *            type: string
+ *          description: User id
+ *      responses:
+ *        "200":
+ *          description: OK
+ *          content:
+ *            application/json:
+ *              schema:
+ *                 $ref: '#/components/schemas/User'
+ *        "401":
+ *          $ref: '#/components/responses/Unauthorized'
+ *        "403":
+ *          $ref: '#/components/responses/Forbidden'
+ *        "404":
+ *          $ref: '#/components/responses/NotFound'
+ *
  */
 
 /**

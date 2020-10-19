@@ -52,4 +52,21 @@ const resetPassword = {
   }),
 }
 
-export { register, login, logout, refreshTokens, forgotPassword, resetPassword }
+const getCurrentUser = {
+  query: Joi.object().keys({
+    token: Joi.string().required(),
+  }),
+  path: Joi.object().keys({
+    id: Joi.string().required(),
+  }),
+}
+
+export {
+  register,
+  login,
+  logout,
+  refreshTokens,
+  forgotPassword,
+  resetPassword,
+  getCurrentUser,
+}
