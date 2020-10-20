@@ -10,12 +10,7 @@ const specs = swaggerJsdoc({
   apis: ['src/docs/*.yml', 'src/routes/*.js'],
 })
 
-router.use('/', swaggerUi.serve, swaggerUi.setup(specs, { explorer: true }))
-router.get(
-  '/',
-  swaggerUi.setup(specs, {
-    explorer: true,
-  })
-)
+router.use('/', swaggerUi.serve)
+router.get('/', swaggerUi.setup(specs))
 
 export default router

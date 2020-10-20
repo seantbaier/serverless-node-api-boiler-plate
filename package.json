@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "pm2 start ecosystem.config.json --no-daemon",
-    "dev": "sls offline start --httpPort 3001",
+    "dev": "serverless offline start --httpPort 3001",
     "build": "sls package --stage dev",
     "test": "cross-env ENV_NAME=test jest -i",
     "test:watch": "cross-env ENV_NAME=test jest -i --watchAll",
