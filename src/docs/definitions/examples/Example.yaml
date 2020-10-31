@@ -1,0 +1,8 @@
+type: object
+title: example
+required:
+  - name
+properties:
+  name:
+    type: string
+    example: no_stress

@@ -1,0 +1,10 @@
+# Examples
+/examples:
+  $ref: ./examples/examples.yaml
+
+/examples/{id}:
+  $ref: ./examples/get_example_by_id.yaml
+
+# Spec Path
+/spec:
+  $ref: ./spec/index.yaml

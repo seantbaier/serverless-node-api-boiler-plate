@@ -1,0 +1,24 @@
+# Examples
+get:
+  tags:
+    - Examples
+  description: Fetch all examples
+  parameters:
+  responses:
+    200:
+      description: Returns all examples
+
+post:
+  tags:
+    - Examples
+  description: Create a new example
+  parameters:
+    - name: example
+      in: body
+      description: an example
+      required: true
+      schema:
+        $ref: '../../definitions/examples/Example.yaml'
+  responses:
+    200:
+      description: Returns all examples

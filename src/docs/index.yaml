@@ -1,0 +1,17 @@
+swagger: '2.0'
+info:
+  $ref: ./info/index.yaml
+basePath: /api/v1
+tags:
+  - name: Examples
+    description: Simple example endpoints
+  - name: Specification
+    description: The swagger API specification
+
+consumes:
+  - application/json
+produces:
+  - application/json
+
+paths:
+  $ref: ./paths/index.yaml

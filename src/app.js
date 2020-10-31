@@ -13,6 +13,7 @@ import authLimiter from './middlewares/rateLimiter'
 import routes from './routes'
 import { errorConverter, errorHandler } from './middlewares/error'
 import ApiError from './utils/ApiError'
+// import swaggerify from './docs'
 
 const app = express()
 
@@ -61,6 +62,11 @@ if (config.env === 'production') {
 }
 
 // v1 api routes
+app.use('/', (req, res) => {
+  res.send('Hello World!')
+})
+app.use(express.static('/public'))
+// swaggerify(app, routes)
 app.use('/api/v1', routes)
 
 // send back a 404 error for any unknown api request

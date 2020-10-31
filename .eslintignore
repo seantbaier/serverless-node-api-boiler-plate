@@ -1,5 +1,7 @@
 node_modules
 .serverless
 .webpack
-.coverage
+coverage
 dist
+mongo-volume
+public

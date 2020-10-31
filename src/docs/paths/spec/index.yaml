@@ -1,0 +1,7 @@
+# Spec path
+get:
+  tags:
+    - Specification
+  responses:
+    200:
+      description: Return the API specification
